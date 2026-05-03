@@ -1,6 +1,14 @@
 "use client"
 
 import { useState } from "react"
+
+const ADMIN_ROLES = new Set([
+  "owner", "project_manager", "it",
+  "leader_saler", "saler",
+  "leader_payment", "payment",
+  "leader_cs", "cs",
+  "admin",
+])
 import { useRouter } from "next/navigation"
 import { api } from "@/lib/api"
 import { setToken } from "@/lib/auth"
@@ -25,7 +33,7 @@ export default function LoginPage() {
         "/api/v1/auth/login",
         { identifier, password }
       )
-      if (res.role !== "admin") {
+      if (!ADMIN_ROLES.has(res.role)) {
         setError("Access denied — admin only")
         return
       }
